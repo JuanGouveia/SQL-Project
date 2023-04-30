@@ -1,6 +1,6 @@
 # Proyecto SQL
 
-![Proyecto videoclub](img/videoclub.jpg)
+![Proyecto videoclub](img/proyecto.webp.jpg)
 
 ## Descripción
 
