@@ -1,4 +1,4 @@
--- Obtener todas las películas disponibles en el inventario
+-- Obtener todas las películas disponibles en el inventario:
 
 SELECT data_film.title, data_film.description, data_film.rental_rate, data_inv.inventory_id
 FROM data_film
