@@ -18,15 +18,15 @@ CREATE SCHEMA IF NOT EXISTS `peliculas_juanito` DEFAULT CHARACTER SET utf8mb4 CO
 USE `peliculas_juanito` ;
 
 -- -----------------------------------------------------
--- Table `peliculas_juanito`.`data_client`
+-- Table `peliculas_juanito`.`client`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`data_client` (
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`client` (
   `client_id` INT NOT NULL,
-  `name` TEXT NULL DEFAULT NULL,
-  `last_name` TEXT NULL DEFAULT NULL,
-  `address` TEXT NULL DEFAULT NULL,
-  `phone_num` BIGINT NULL DEFAULT NULL,
-  `email` TEXT NULL DEFAULT NULL,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `last_name` VARCHAR(45) NULL DEFAULT NULL,
+  `address` VARCHAR(45) NULL DEFAULT NULL,
+  `phone_num` INT NULL DEFAULT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`client_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -34,22 +34,22 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `peliculas_juanito`.`data_film`
+-- Table `peliculas_juanito`.`film`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`data_film` (
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`film` (
   `film_id` INT NOT NULL,
-  `title` TEXT NULL DEFAULT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  `release_year` TEXT NULL DEFAULT NULL,
-  `language` TEXT NULL DEFAULT NULL,
+  `title` VARCHAR(45) NULL DEFAULT NULL,
+  `description` VARCHAR(1000) NULL DEFAULT NULL,
+  `release_year` VARCHAR(4) NULL DEFAULT NULL,
+  `language` VARCHAR(45) NULL DEFAULT NULL,
   `rental_duration` INT NULL DEFAULT NULL,
-  `rental_rate` DOUBLE NULL DEFAULT NULL,
+  `rental_rate` FLOAT NULL DEFAULT NULL,
   `length` INT NULL DEFAULT NULL,
   `replacement_cost` DOUBLE NULL DEFAULT NULL,
-  `rating` TEXT NULL DEFAULT NULL,
-  `special_features` TEXT NULL DEFAULT NULL,
-  `actors` TEXT NULL DEFAULT NULL,
-  `category` TEXT NULL DEFAULT NULL,
+  `rating` VARCHAR(10) NULL DEFAULT NULL,
+  `special_features` VARCHAR(45) NULL DEFAULT NULL,
+  `actors` VARCHAR(45) NULL DEFAULT NULL,
+  `category` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`film_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -57,18 +57,17 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `peliculas_juanito`.`data_inv`
+-- Table `peliculas_juanito`.`inventory`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`data_inv` (
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`inventory` (
   `inventory_id` INT NOT NULL,
   `film_id` INT NULL DEFAULT NULL,
-  `store_id` INT NULL DEFAULT NULL,
   `data_film_film_id` INT NOT NULL,
   PRIMARY KEY (`inventory_id`),
-  INDEX `fk_data_inv_data_film_idx` (`data_film_film_id` ASC) VISIBLE,
-  CONSTRAINT `fk_data_inv_data_film`
+  INDEX `fk_data_inv_data_film1_idx` (`data_film_film_id` ASC) VISIBLE,
+  CONSTRAINT `fk_data_inv_data_film1`
     FOREIGN KEY (`data_film_film_id`)
-    REFERENCES `peliculas_juanito`.`data_film` (`film_id`)
+    REFERENCES `peliculas_juanito`.`film` (`film_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -77,28 +76,28 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `peliculas_juanito`.`data_rent`
+-- Table `peliculas_juanito`.`rental`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`data_rent` (
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`rental` (
   `rental_id` INT NOT NULL,
-  `rental_date` DATETIME NULL DEFAULT NULL,
+  `rental_date` VARCHAR(4) NULL DEFAULT NULL,
   `inventory_id` INT NULL DEFAULT NULL,
-  `customer_id` INT NULL DEFAULT NULL,
-  `return_date` DATETIME NULL DEFAULT NULL,
+  `client_id` INT NULL DEFAULT NULL,
+  `return_date` INT NULL DEFAULT NULL,
   `staff_id` INT NULL DEFAULT NULL,
-  `data_inv_inventory_id` INT NOT NULL,
   `data_client_client_id` INT NOT NULL,
+  `data_inv_inventory_id` INT NOT NULL,
   PRIMARY KEY (`rental_id`),
+  INDEX `fk_data_rent_data_client_idx` (`data_client_client_id` ASC) VISIBLE,
   INDEX `fk_data_rent_data_inv1_idx` (`data_inv_inventory_id` ASC) VISIBLE,
-  INDEX `fk_data_rent_data_client1_idx` (`data_client_client_id` ASC) VISIBLE,
-  CONSTRAINT `fk_data_rent_data_inv1`
-    FOREIGN KEY (`data_inv_inventory_id`)
-    REFERENCES `peliculas_juanito`.`data_inv` (`inventory_id`)
+  CONSTRAINT `fk_data_rent_data_client`
+    FOREIGN KEY (`data_client_client_id`)
+    REFERENCES `peliculas_juanito`.`client` (`client_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_data_rent_data_client1`
-    FOREIGN KEY (`data_client_client_id`)
-    REFERENCES `peliculas_juanito`.`data_client` (`client_id`)
+  CONSTRAINT `fk_data_rent_data_inv1`
+    FOREIGN KEY (`data_inv_inventory_id`)
+    REFERENCES `peliculas_juanito`.`inventory` (`inventory_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
