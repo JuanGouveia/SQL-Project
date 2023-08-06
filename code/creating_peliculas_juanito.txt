@@ -1,0 +1,187 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema peliculas_juanito
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema peliculas_juanito
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `peliculas_juanito` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `peliculas_juanito` ;
+
+-- -----------------------------------------------------
+-- Table `peliculas_juanito`.`category`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`category` (
+  `category_id` INT NOT NULL,
+  `name` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`category_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `peliculas_juanito`.`customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`customer` (
+  `customer_id` INT NOT NULL,
+  `name` VARCHAR(20) NULL DEFAULT NULL,
+  `address` VARCHAR(50) NULL DEFAULT NULL,
+  `postal_code` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`customer_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `peliculas_juanito`.`language`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`language` (
+  `language_id` INT NOT NULL,
+  `name` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`language_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `peliculas_juanito`.`film`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`film` (
+  `film_id` INT NOT NULL,
+  `title` VARCHAR(20) NULL DEFAULT NULL,
+  `description` VARCHAR(50) NULL DEFAULT NULL,
+  `release_year` INT NULL DEFAULT NULL,
+  `rental_duration` INT NULL DEFAULT NULL,
+  `rental_rate` FLOAT NULL DEFAULT NULL,
+  `length` INT NULL DEFAULT NULL,
+  `replacement_cost` FLOAT NULL DEFAULT NULL,
+  `rating` VARCHAR(20) NULL DEFAULT NULL,
+  `special_features` VARCHAR(20) NULL DEFAULT NULL,
+  `lead_actor_actress` VARCHAR(20) NULL DEFAULT NULL,
+  `language_id` INT NOT NULL,
+  `category_id` INT NOT NULL,
+  PRIMARY KEY (`film_id`),
+  INDEX `language_id_idx` (`language_id` ASC) VISIBLE,
+  INDEX `category_id_idx` (`category_id` ASC) VISIBLE,
+  CONSTRAINT `language_id`
+    FOREIGN KEY (`language_id`)
+    REFERENCES `peliculas_juanito`.`language` (`language_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `category_id`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `peliculas_juanito`.`category` (`category_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `peliculas_juanito`.`store`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`store` (
+  `store_id` INT NOT NULL,
+  `address` VARCHAR(20) NULL DEFAULT NULL,
+  `postal_code` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`store_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `peliculas_juanito`.`inventory`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`inventory` (
+  `inventory_id` INT NOT NULL,
+  `film_id` INT NOT NULL,
+  `store_id` INT NOT NULL,
+  PRIMARY KEY (`inventory_id`),
+  INDEX `film_id_idx` (`film_id` ASC) VISIBLE,
+  INDEX `store_id_idx` (`store_id` ASC) VISIBLE,
+  CONSTRAINT `film_id`
+    FOREIGN KEY (`film_id`)
+    REFERENCES `peliculas_juanito`.`film` (`film_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `store_id`
+    FOREIGN KEY (`store_id`)
+    REFERENCES `peliculas_juanito`.`store` (`store_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `peliculas_juanito`.`staff`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`staff` (
+  `staff_id` INT NOT NULL,
+  `name` VARCHAR(20) NULL DEFAULT NULL,
+  `email` VARCHAR(20) NULL DEFAULT NULL,
+  `store_id` INT NOT NULL,
+  PRIMARY KEY (`staff_id`),
+  INDEX `store_id_idx` (`store_id` ASC) VISIBLE,
+  CONSTRAINT `store_id`
+    FOREIGN KEY (`store_id`)
+    REFERENCES `peliculas_juanito`.`store` (`store_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `peliculas_juanito`.`rental`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `peliculas_juanito`.`rental` (
+  `rental_id` INT NOT NULL,
+  `rental_date` VARCHAR(20) NULL DEFAULT NULL,
+  `return_date` VARCHAR(20) NULL DEFAULT NULL,
+  `inventory_id` INT NOT NULL,
+  `customer_id` INT NOT NULL,
+  `staff_id` INT NOT NULL,
+  PRIMARY KEY (`rental_id`),
+  INDEX `inventory_id_idx` (`inventory_id` ASC) VISIBLE,
+  INDEX `customer_id_idx` (`customer_id` ASC) VISIBLE,
+  INDEX `staff_id_idx` (`staff_id` ASC) VISIBLE,
+  CONSTRAINT `inventory_id`
+    FOREIGN KEY (`inventory_id`)
+    REFERENCES `peliculas_juanito`.`inventory` (`inventory_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `customer_id`
+    FOREIGN KEY (`customer_id`)
+    REFERENCES `peliculas_juanito`.`customer` (`customer_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `staff_id`
+    FOREIGN KEY (`staff_id`)
+    REFERENCES `peliculas_juanito`.`staff` (`staff_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 # password
-src/password.txt
+**/password.txt
