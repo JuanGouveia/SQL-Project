@@ -39,6 +39,9 @@ En esta etapa, comenzamos eliminando ciertas columnas que no son relevantes para
 Posteriormente, creamos nuevos dataframes a partir de la información disponible para complementar y enriquecer nuestros datos. Estos nuevos dataframes se diseñan para proporcionar una visión más completa y detallada de la información requerida para el proyecto.
 
 ![Creación 1](img/creacion_1.png)
+
+<br>
+
 ![Creación 2](img/creacion_2.png)
 
 ### Introducción
