@@ -98,7 +98,7 @@ Una vez que hemos establecido nuestra base de datos con sus respectivas relacion
 
 # Conclusiones
 
-Después de completar la limpieza y adaptación de los archivos .csv y la posterior inserción en MySQL, hemos logrado crear una base de datos completa y funcional para el videoclub. Gracias a las relaciones establecidas entre las tablas, hemos podido realizar una serie de consultas que nos han proporcionado información valiosa sobre el funcionamiento del negocio.
+Después de completar la limpieza y adaptación de los archivos csv y la posterior inserción en MySQL, hemos logrado crear una base de datos completa y funcional para el videoclub. Gracias a las relaciones establecidas entre las tablas, hemos podido realizar una serie de consultas que nos han proporcionado información valiosa sobre el funcionamiento del negocio.
 
 Entre las distintas consultas realizadas, hemos obtenido datos como las películas más rentadas, la cantidad de películas por categoría, el total de alquileres realizados por los clientes, la cantidad de películas en cada categoría y las películas con mayor duración en cada una de las categorías. Toda esta información nos ha brindado una visión más clara y precisa del negocio, lo que a su vez nos ayudará a tomar decisiones más informadas y a mejorar el servicio ofrecido al cliente.
 
